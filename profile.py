@@ -91,7 +91,7 @@ def merge((file1, file2)):
     for key in keys:
         new[key] = _merge_key(p1, p2, key)
 
-    new['topFive'] = sorted(new['topFive'], key=lambda x: x[2])[:5]
+    new['topFive'] = sorted(new['topFive'], key=lambda x: x[2], reverse=True)[:5]
 
     new['scores'] = []
     for a, b in zip(p1['scores'], p2['scores']):
