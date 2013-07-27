@@ -17,7 +17,7 @@
 #
 
 import argparse
-import profile
+from ftl import profile
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Merge two FTL profiles.')
