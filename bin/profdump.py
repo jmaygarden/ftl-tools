@@ -17,12 +17,13 @@
 #
 
 import argparse
-from ftl import profile
+from ftltools import profile
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Dump FTL profile data.')
     parser.add_argument('file', nargs=1, help='FTL profile (prof.sav) file')
     args = parser.parse_args()
-    data = profile.parse(args.file[0])
-    print profile.to_txt(data)
+    with open(args.file[0], 'rb') as fin:
+        data = profile.parse(fin)
+        print profile.to_txt(data)
 

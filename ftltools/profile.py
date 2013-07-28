@@ -18,55 +18,54 @@
 
 from struct import calcsize, pack, unpack
 
-def parse(filename):
-    with open(filename, 'rb') as fin:
-        data = {
-                'version': 0,
-                'achievements': [],
-                'topFive': [],
-                'highScores': [],
-                'skills': [],
-                }
+def parse(fin):
+    data = {
+            'version': 0,
+            'achievements': [],
+            'topFive': [],
+            'highScores': [],
+            'skills': [],
+            }
 
-        data['version'], numAchievements = unpack('2I', fin.read(calcsize('2I')))
+    data['version'], numAchievements = unpack('2I', fin.read(calcsize('2I')))
 
-        for i in xrange(numAchievements):
-            n = unpack('I', fin.read(calcsize('I')))[0]
-            name = fin.read(n)
-            normal = unpack('I', fin.read(calcsize('I')))[0]
-            data['achievements'].append((name, normal))
+    for i in xrange(numAchievements):
+        n = unpack('I', fin.read(calcsize('I')))[0]
+        name = fin.read(n)
+        normal = unpack('I', fin.read(calcsize('I')))[0]
+        data['achievements'].append((name, normal))
 
-        data['ships'] = [unpack('I', fin.read(calcsize('I')))[0] for i in xrange(12)]
+    data['ships'] = [unpack('I', fin.read(calcsize('I')))[0] for i in xrange(12)]
 
-        numTopFive = unpack('I', fin.read(calcsize('I')))[0]
-        for i in xrange(numTopFive):
-            n = unpack('I', fin.read(calcsize('I')))[0]
-            shipName = fin.read(n)
-            n = unpack('I', fin.read(calcsize('I')))[0]
-            shipType = fin.read(n)
-            stats = unpack('4I', fin.read(calcsize('4I')))
-            data['topFive'].append((shipName, shipType, stats))
+    numTopFive = unpack('I', fin.read(calcsize('I')))[0]
+    for i in xrange(numTopFive):
+        n = unpack('I', fin.read(calcsize('I')))[0]
+        shipName = fin.read(n)
+        n = unpack('I', fin.read(calcsize('I')))[0]
+        shipType = fin.read(n)
+        stats = unpack('4I', fin.read(calcsize('4I')))
+        data['topFive'].append((shipName, shipType, stats))
 
-        numHighScores = unpack('I', fin.read(calcsize('I')))[0]
-        for i in xrange(numHighScores):
-            n = unpack('I', fin.read(calcsize('I')))[0]
-            shipName = fin.read(n)
-            n = unpack('I', fin.read(calcsize('I')))[0]
-            shipType = fin.read(n)
-            stats = unpack('4I', fin.read(calcsize('4I')))
-            data['highScores'].append((shipName, shipType, stats))
+    numHighScores = unpack('I', fin.read(calcsize('I')))[0]
+    for i in xrange(numHighScores):
+        n = unpack('I', fin.read(calcsize('I')))[0]
+        shipName = fin.read(n)
+        n = unpack('I', fin.read(calcsize('I')))[0]
+        shipType = fin.read(n)
+        stats = unpack('4I', fin.read(calcsize('4I')))
+        data['highScores'].append((shipName, shipType, stats))
 
-        data['scores'] = list(unpack('10I', fin.read(calcsize('10I'))))
-        for i in xrange(5):
-            score = unpack('I', fin.read(calcsize('I')))[0]
-            n = unpack('I', fin.read(calcsize('I')))[0]
-            name = fin.read(n)
-            n = unpack('I', fin.read(calcsize('I')))[0]
-            race = fin.read(n)
-            gender = unpack('I', fin.read(calcsize('I')))[0]
-            data['skills'].append((score, name, race, gender))
+    data['scores'] = list(unpack('10I', fin.read(calcsize('10I'))))
+    for i in xrange(5):
+        score = unpack('I', fin.read(calcsize('I')))[0]
+        n = unpack('I', fin.read(calcsize('I')))[0]
+        name = fin.read(n)
+        n = unpack('I', fin.read(calcsize('I')))[0]
+        race = fin.read(n)
+        gender = unpack('I', fin.read(calcsize('I')))[0]
+        data['skills'].append((score, name, race, gender))
 
-        return data
+    return data
 
 
 def merge((file1, file2)):

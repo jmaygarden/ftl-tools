@@ -17,14 +17,14 @@
 #
 
 import argparse
-from ftl import profile
+from ftltools import profile
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Merge two FTL profiles.')
     parser.add_argument('infile', nargs=2, help='FTL profile (prof.sav) files to merge.')
     parser.add_argument('-o', metavar='outfile', required=True, help='New FTL profile created from the merge.')
     args = parser.parse_args()
-    data = profile.merge(args.infile)
+    data = profile.merge(tuple([open(filename, 'rb') for filename in args.infile]))
     with open(args.o, 'wb') as fout:
         fout.write(profile.to_sav(data))
 
