@@ -24,7 +24,10 @@ if __name__ == '__main__':
     parser.add_argument('infile', nargs=2, help='FTL profile (prof.sav) files to merge.')
     parser.add_argument('-o', metavar='outfile', required=True, help='New FTL profile created from the merge.')
     args = parser.parse_args()
-    data = profile.merge(tuple([open(filename, 'rb') for filename in args.infile]))
+
+    p1 = profile.parse(open(args.infile[0]))
+    p2 = profile.parse(open(args.infile[1]))
+    data = profile.merge(p1, p2)
     with open(args.o, 'wb') as fout:
         fout.write(profile.to_sav(data))
 

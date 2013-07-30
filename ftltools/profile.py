@@ -68,8 +68,7 @@ def parse(fin):
     return data
 
 
-def merge((file1, file2)):
-    p1, p2 = parse(file1), parse(file2)
+def merge(p1, p2):
     new = dict()
 
     new['version'] = max(p1['version'], p2['version'])
@@ -83,12 +82,13 @@ def merge((file1, file2)):
 
     keys = [
             'achievements',
-            'ships',
             'topFive',
             'highScores',
             ]
     for key in keys:
         new[key] = _merge_key(p1, p2, key)
+
+    new['ships'] = map(lambda (a, b): a or b, zip(p1['ships'], p2['ships']))
 
     new['topFive'] = sorted(new['topFive'], key=lambda x: x[2], reverse=True)[:5]
 
